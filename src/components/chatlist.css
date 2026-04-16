@@ -136,12 +136,13 @@ img {
 }
 
 .image-active {
-    position: relative;
-    top: 2px;
-    right: 17px;
-    width: 14px;
-    height: 14px;
-
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
 }
 
 .active-image-container-select {
@@ -263,8 +264,11 @@ img {
     bottom: 0;
     width: 100%;
     display: flex;
-    justify-content: space-around;
-    padding: 10px 20px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    gap: 10px;
+    box-sizing: border-box;
 }
 
 .container-message-user {
@@ -285,32 +289,41 @@ img {
 
 .input-messaging-container {
     margin-top: auto;
-    width: 500px;
+    flex: 1;
+    max-width: 500px;
+    position: relative;
 }
 
 .input-messaging-container i {
-    position: relative;
-    right: 20px;
-
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .input-messaging-container input {
-    width: 470px;
+    width: 100%;
     height: 30px;
     border: none;
     border-radius: 10px;
     background-color: #f0f2f5;
     outline: none;
+    max-width: 100%;
 }
 
 .icon-messaging-container {
     display: flex;
     justify-content: space-around;
     width: 100px;
+    flex-shrink: 0;
 }
 
 .icon-messaging-container i {
     font-size: 17px;
+}
+
+.like-zone-container {
+    flex-shrink: 0;
 }
 
 .main-container-calling.Show {
@@ -530,9 +543,16 @@ img {
         padding: 12px;
     }
 
-    .chat-image img {
+    .chat-image {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .chat-image img:first-child {
         width: 42px;
         height: 42px;
+        border-radius: 50%;
     }
 
     .chat-name h1 {

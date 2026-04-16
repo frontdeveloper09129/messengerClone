@@ -326,6 +326,7 @@ export function ChatList() {
                                             </div>
 
                                             <div className="left-chat-header">
+                                                <i className="fa-solid fa-arrow-left" title="Back to chat list" onClick={() => setSelectProfile(listPeople[0])}></i>
                                                 <i className="fa-solid fa-phone" role='button' onClick={handleClickPhone}></i>
                                                 <i className="fa-solid fa-video" onClick={handleVideoCall}></i>
                                                 <i className="fa-solid fa-ellipsis" onClick={handleMenu}></i>
