@@ -124,51 +124,26 @@ export function ChatList() {
     const handleMenu = () => {
         alert("menu")
     }
-
-    // create a list which message sender wil send
-
-    // const chatMesageList = [
-    //     {
-
-    //     }
-    // ]
-    console.log(selectProfile)
-
-    // create a function here for handleSelectProfile
     const handleSelectProfile = (person) => {
-        // every time that i click this it will show the profile to that chating container
         setSelectProfile(person)
-        // // i going to do here is to set the isactive become true but it depends which item i click
-        // const updateIscorrect = listPeople.map((item) =>
-        //     item.id === idx ? { ...item, isActive: true } : item
-        // );
-        // setActive(updateIscorrect
-
-
         // so now since other person profule is not active i want to be it active when i click their profile
         const updateIsactiveList = listPeople.map((item) => item.id === person.id && item.isActive === false ? { ...item, isActive: true } : item)
-        // set the value of updateISactive in the usestate listpeople
-        // since i change the value of listpeople isactive i apply it to that listpeople state to change the value isactive
         setListPeople(updateIsactiveList)
-
     }
 
     const handleSendMesage = (e) => {
-        // alert("hellow")
-        // get the value of input
-        // if (sendText.trim() === "") return;
-        // if(e.key === "Enter") {
-        //     setDisplayMessage([...displayMessage, sendText])
-        //     setSendText("")
-        // }
-        // if (sendText.trim() === "") return;
-
-        // setDisplayMessage((prev) => [...prev, sendText]);
-        // setSendText("");
         if (sendText.trim() === "") return;
+        const updating = () => {
+            setListPeople(updatedWithBot);
+            const updatedProfile = updatedWithBot.find(item => item.id === selectProfile.id)
+            if (updatedProfile) {
+                setSelectProfile(updatedProfile)
+            }
+            setSendText("");
+        }
 
         // Bot response check - must be BEFORE setSendText("")
-        if (sendText === "hellow") {
+        if (sendText.toLocaleLowerCase() === "hellow" || sendText.toLocaleLowerCase() === "hi") {
             const updatedWithBot = listPeople.map(item => {
                 if (item.id === selectProfile.id) {
                     return {
@@ -182,15 +157,59 @@ export function ChatList() {
                 }
                 return item;
             });
-            setListPeople(updatedWithBot);
-            const updatedProfile = updatedWithBot.find(item => item.id === selectProfile.id)
-            if (updatedProfile) {
-                setSelectProfile(updatedProfile)
+            setListPeople(updatedWithBot)
+            const updateProfile = updatedWithBot.find(item => item.id === selectProfile.id)
+            if (updateProfile) {
+                setSelectProfile(updateProfile)
             }
-            setSendText("");
+            setSendText("")
+            // updating()
             return;
-        }
+        } else if (sendText.toLocaleLowerCase() === "how old are you?") {
+            const updatedWithBot = listPeople.map((item) => {
+                if (item.id === selectProfile.id) {
+                    return {
+                        ...item,
+                        message: [
+                            ...(item.message || []), //“If item.message exists, use it. If not, use an empty array [].”
+                            { sender: "user", text: sendText },
+                            { sender: "bot", text: "sorry i dont have a answer for that question because i am just a robot that created by human." }
+                        ]
+                    };
+                }
+                return item;
+            });
+            setListPeople(updatedWithBot)
+            const updateProfile = updatedWithBot.find(item => item.id === selectProfile.id)
+            if (updateProfile) {
+                setSelectProfile(updateProfile)
+            }
+            setSendText("")
+            // updating()
+            return // stop the code
+        } else {
+            const updatedWithBot = listPeople.map((item) => {
+                if (item.id === selectProfile.id) {
+                    return {
+                        ...item, message: [
+                            ...(item.message || []), //“If item.message exists, use it. If not, use an empty array [].”
+                            { sender: "user", text: sendText },
+                            { sender: "bot", text: "sorry i dont understand what your saying to me, because i just only know a few words and i have a limit for that." }
+                        ]
+                    }
+                }
+                return item
+            });
+            setListPeople(updatedWithBot);
+            const updateProfile = updatedWithBot.find(item => item.id === selectProfile.id)
+            if (updateProfile) {
+                setSelectProfile(updateProfile)
+            }
+            setSendText("")
+            // updating()
 
+            return
+        }
         setSendText("");
 
         const updated = listPeople.map(item => {
@@ -206,6 +225,7 @@ export function ChatList() {
             return item;
         });
 
+
         setListPeople(updated)
 
         // Update selectProfile to reflect the new message
@@ -216,29 +236,35 @@ export function ChatList() {
 
     }
     const handleLike = () => {
-        // setDisplayMessage((prev) => [...prev, { type: "like", value: "fa-thumbs-up" }])
-        // setDisplayMessage((prev) => [...prev, "fa-thumbs-up"])
-
-        // so here i want to create a array that has two values which is the input and the like zone
-        // so here i want to identify which first that use so example if i send the message using input that only will display else if the like i click then is will only send
-        // but before that i want to  put that valuw into array
-
         const updated = listPeople.map((likesIcon) => likesIcon.id === selectProfile.id ? {
             ...likesIcon, message: [
                 ...(likesIcon.message || []), { sender: "user", type: "like" }
             ]
-            
+
         } : likesIcon)
-        
+
         setListPeople(updated)
-        
+
         // Update selectProfile to reflect the new like
         const updatedProfile = updated.find(item => item.id === selectProfile.id)
         if (updatedProfile) {
             setSelectProfile(updatedProfile)
         }
     }
-
+    const [inputClick, setInputClick] = useState(false)
+    const [searchInput, setSearchInput] = useState("")
+    const handleClickInput = () => {
+        setInputClick(true)
+    }
+    const handleClickExit = () => {
+        setInputClick(false)
+    }
+    const handleChangeInput = (e) => {
+        setSearchInput(e.target.value)
+        // setSearchInput(value)
+        // console.log(searchInput)
+    }
+    const ValueInput = listPeople.filter(person => person.name.toLocaleLowerCase().includes(searchInput.toLowerCase()))// to know in the search input has letter of listPeople name
     return (
         <div className="main-container">
             <div className="chat-list-container">
@@ -253,59 +279,49 @@ export function ChatList() {
                     </div>
 
                     {/* search bar */}
-                    <div className="search-bar-container">
+                    <div className="search-bar-container" onClick={(handleClickInput)}>
                         <i className="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Search Messenger" />
+                        <input type="text" value={searchInput} placeholder="Search Messenger" onChange={handleChangeInput} />
                     </div>
 
                     <div className="main-list-container">
                         {/* list chat people */}
-                        {listPeople.map((person, idx) => (
-                            <div key={idx} className="list-people-container" onClick={() => handleSelectProfile(person, idx)}>
-                                <div className="image">
-                                    <img src={person.profile} alt="" />
-                                    {person.isActive && (
-                                        <img className='chat-list-image' src={"https://media.baamboozle.com/uploads/images/599461/1661872333_9457.png"} />
-                                    )}
-                                </div> {/*put a profile here*/}
-
-                                <div className="name">
-                                    <h1>{person.name}</h1>
-                                    <p>you're now friends with {person.name}</p>
-                                </div>
+                        {inputClick === true ? (
+                            <div className="searching-input-container">
+                                <i className="fa-solid fa-arrow-left" onClick={handleClickExit}></i>
+                                {ValueInput.map((person, item) => (
+                                    <div key={item} className="container-person-find" onClick={() => handleSelectProfile(person)}>
+                                        <div className="c">
+                                            <img src={person.profile} alt="" />
+                                            <p>{person.name}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        ) : (
+                            listPeople.map((person, idx) => (
+                                <div key={idx} className="list-people-container" onClick={() => handleSelectProfile(person, idx)}>
+                                    <div className="image">
+                                        <img src={person.profile} alt="" />
+                                        {person.isActive && (
+                                            <img className='chat-list-image' src={"https://media.baamboozle.com/uploads/images/599461/1661872333_9457.png"} />
+                                        )}
+                                    </div> {/*put a profile here*/}
+
+                                    <div className="name">
+                                        <h1>{person.name}</h1>
+                                        <p>you're now friends with {person.name}</p>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
 
             <div className="chatting-container">
                 <div className="contact-wit-container">
-                    {/* <div className="header-contact">
-                        <div className="image-header-active">
-                            {/* image */}
-                    {/* <img src={selectProfile.profile} alt="" />
-                            {active === true && (
-                                <img className="image-active" src={"https://media.baamboozle.com/uploads/images/599461/1661872333_9457.png"} />
-                            )} */}
-                    {/* </div>
-                        <h1>{selectProfile.name}</h1>
-                        {active === true && (
-                            <p>active</p>
-                        )}
-                    </div> */}
                     <div className="header">
-                        {/* <div className="image-header-active">
-                            {/* <img src={selectProfile.profile} alt="" />
-                            {/* i just do here that if the item one is active true it will show the green active */}
-                        {/* {selectProfile.isActive &&(
-                                <img className='image-active'  src={"https://upload.wikimedia.org/wikipedia/commons/6/6a/Green_Dot_%28Active%29.png"}/>
-                            )}  */}
-
-
-
-                        {/* </div> */}
-
                         {/* so here i just map all the listpeople state and show only which item i selected */}
                         {listPeople.map((item) => (
                             <div key={item.id} className="image-header-active">
@@ -315,7 +331,9 @@ export function ChatList() {
                                             <div className="right-chat-header">
                                                 <div className="chat-image">
                                                     <img src={item.profile} />
-                                                    <img className='image-active' src={"https://upload.wikimedia.org/wikipedia/commons/6/6a/Green_Dot_%28Active%29.png"} />
+                                                    {item.isActive && (
+                                                        <img className='image-active' src={"https://upload.wikimedia.org/wikipedia/commons/6/6a/Green_Dot_%28Active%29.png"} />
+                                                    )}
                                                 </div>
                                                 <div className="chat-name">
                                                     <h1>{item.name}</h1>
@@ -338,29 +356,6 @@ export function ChatList() {
 
                                             </div>
                                             <div className="container-message-user">
-                                                {/* container of mesage that send by user */}
-                                                {/* {displayMessage.map((msg, msgIdx) => (
-                                                    <div key={msgIdx} className="message-send-container">
-                                                        {msg.type === "text" && (
-                                                            <p>{msg.value}</p>
-                                                        )}
-
-                                                        {msg.type === "like" && (
-                                                            <i className={`fa-solid ${msg.value}`}></i>
-                                                        )}
-                                                    </div>
-                                                ))} */}
-                                                {/* {displayMessagem.map((text, indx) => (
-                                                    <div key={indx} className="user-response-container">
-                                                        <p>{text}</p>
-                                                    </div>  
-                                                ))}
-                                                {userMessage.map((responses, index) => (
-                                                    <div key={index} className="bot-response-container">
-                                                        <p>{responses}</p>
-                                                    </div>
-                                                ))} */}
-
                                                 {selectProfile.message?.map((response, inds) => (
                                                     <div key={inds} className={`chat-container ${response.sender === "user" ? "user" : "bot"}`}>
                                                         {response.type === "like" ? (

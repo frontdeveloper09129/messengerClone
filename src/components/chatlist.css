@@ -89,7 +89,7 @@ img {
 }
 
 .main-list-container {
-    margin-top: 30px;
+    margin-top: 20px;
     overflow-y: auto;
     scrollbar-width: thin;
     height: 550px;
@@ -135,7 +135,7 @@ img {
     height: 14px;
 }
 
-.image-active {
+/* .image-active {
     position: absolute;
     bottom: 2px;
     right: 2px;
@@ -143,7 +143,17 @@ img {
     height: 12px;
     border-radius: 50%;
     border: 2px solid #fff;
+} */
+
+.image-active {
+    position: absolute;
+    top: 60px;
+    left: 50px;
+    width: 14px;
+    height: 14px;
 }
+
+/* .image-active img {} */
 
 .active-image-container-select {
     display: flex;
@@ -219,15 +229,16 @@ img {
     }
 
     .active-image-container-select {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         gap: 12px;
     }
 
     .right-chat-header,
     .left-chat-header {
         width: 100%;
-        justify-content: flex-start;
+        display: flex;
         gap: 12px;
         flex-wrap: wrap;
     }
@@ -504,7 +515,7 @@ img {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
     .chat-list-container,
     .chatting-container {
@@ -520,8 +531,7 @@ img {
         height: auto;
     }
 
-    .chat-list-image,
-    .image-active {
+    .chat-list-image {
         right: 12px;
     }
 
@@ -541,12 +551,8 @@ img {
 
     .active-image-container-select {
         padding: 12px;
-    }
-
-    .chat-image {
-        position: relative;
         display: flex;
-        align-items: center;
+        justify-content: space-between;
     }
 
     .chat-image img:first-child {
@@ -558,4 +564,33 @@ img {
     .chat-name h1 {
         font-size: 16px;
     }
+}
+
+.searching-input-container {
+    width: 95%;
+    height: auto;
+    /* border: 1px solid black; */
+    overflow: hidden;
+    background-color: #ededed;
+    border-radius: 10px;
+}
+
+.c {
+    display: flex;
+    text-align: center;
+    gap: 20px;
+    padding: 10px 20px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.c p {
+    font-size: 17px;
+    text-align: center;
+    color: #080808;
+}
+
+.c img {
+    width: 40px;
+    height: 40px
 }
